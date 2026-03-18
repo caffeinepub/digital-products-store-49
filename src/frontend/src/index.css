@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    /* Dark theme only - neon-on-dark fintech palette */
+    --background: 0.09 0.02 240;
+    --foreground: 0.97 0.01 270;
+    --card: 0.12 0.03 245;
+    --card-foreground: 0.97 0.01 270;
+    --popover: 0.12 0.03 245;
+    --popover-foreground: 0.97 0.01 270;
+    --primary: 0.8 0.15 210;
+    --primary-foreground: 0.09 0.02 240;
+    --secondary: 0.55 0.25 280;
+    --secondary-foreground: 0.97 0.01 270;
+    --muted: 0.16 0.025 245;
+    --muted-foreground: 0.7 0.02 255;
+    --accent: 0.6 0.2 260;
+    --accent-foreground: 0.97 0.01 270;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.25 0.04 250;
+    --input: 0.18 0.03 245;
+    --ring: 0.8 0.15 210;
+    --chart-1: 0.8 0.15 210;
+    --chart-2: 0.6 0.2 260;
+    --chart-3: 0.55 0.25 280;
+    --chart-4: 0.6 0.25 300;
+    --chart-5: 0.7 0.02 255;
+    --sidebar: 0.12 0.03 245;
+    --sidebar-foreground: 0.97 0.01 270;
+    --sidebar-primary: 0.8 0.15 210;
+    --sidebar-primary-foreground: 0.09 0.02 240;
+    --sidebar-accent: 0.16 0.025 245;
+    --sidebar-accent-foreground: 0.97 0.01 270;
+    --sidebar-border: 0.25 0.04 250;
+    --sidebar-ring: 0.8 0.15 210;
+
+    /* Neon custom tokens */
+    --cyan: #22d3ff;
+    --blue: #3b82ff;
+    --violet: #7c4dff;
+    --magenta: #b84bff;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(160deg, #05070b 0%, #080f1c 50%, #06090f 100%);
+    min-height: 100vh;
+  }
+}
+
+/* Gradient border utility */
+.glow-border {
+  background: linear-gradient(#0b1220, #0b1220) padding-box,
+    linear-gradient(135deg, #22d3ff, #3b82ff, #7c4dff) border-box;
+  border: 2px solid transparent;
+}
+
+.glow-border-hover:hover {
+  background: linear-gradient(#0c1526, #0c1526) padding-box,
+    linear-gradient(135deg, #22d3ff, #3b82ff, #b84bff) border-box;
+  border: 2px solid transparent;
+  box-shadow: 0 0 24px rgba(34, 211, 255, 0.15), 0 0 48px
+    rgba(124, 77, 255, 0.1);
+}
+
+/* Gradient CTA button */
+.btn-gradient {
+  background: linear-gradient(135deg, #22d3ff 0%, #3b82ff 50%, #7c4dff 100%);
+  box-shadow: 0 0 20px rgba(34, 211, 255, 0.4), 0 0 40px rgba(124, 77, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  box-shadow: 0 0 30px rgba(34, 211, 255, 0.6), 0 0 60px
+    rgba(124, 77, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Hero glow aura */
+.hero-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(59, 130, 255, 0.18) 0%,
+    rgba(124, 77, 255, 0.12) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #22d3ff, #3b82ff, #7c4dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Keyframes for pulse glow */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(34, 211, 255, 0.4), 0 0 40px
+      rgba(124, 77, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(34, 211, 255, 0.6), 0 0 60px
+      rgba(124, 77, 255, 0.35);
+  }
+}
+
+.btn-pulse {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+/* FAQ accordion */
+.faq-item {
+  background: linear-gradient(#0b1220, #0b1220) padding-box,
+    linear-gradient(135deg, rgba(34, 211, 255, 0.3), rgba(124, 77, 255, 0.3))
+    border-box;
+  border: 1px solid transparent;
+}
