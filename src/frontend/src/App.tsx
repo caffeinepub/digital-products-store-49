@@ -3,19 +3,37 @@ import {
   Bot,
   CheckCircle2,
   ChevronDown,
+  Copy,
   Mail,
   MessageCircle,
+  Send,
   Shield,
   ShoppingCart,
   Star,
   TrendingUp,
   Users,
+  X,
   Zap,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 const currentYear = new Date().getFullYear();
+
+function TelegramCTA() {
+  return (
+    <a
+      href="https://t.me/XEpay_2"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-center gap-2 text-xs font-semibold transition-all hover:opacity-80"
+      style={{ color: "#22D3FF" }}
+    >
+      <Send size={13} />
+      Need help? Contact us on Telegram @XEpay_2
+    </a>
+  );
+}
 
 function GradientButton({
   children,
@@ -59,7 +77,14 @@ function ProductCard({
   title,
   description,
   bullets,
-}: { icon: string; title: string; description: string; bullets: string[] }) {
+  onBuyNow,
+}: {
+  icon: string;
+  title: string;
+  description: string;
+  bullets: string[];
+  onBuyNow: () => void;
+}) {
   return (
     <motion.div
       whileHover={{ y: -6, scale: 1.02 }}
@@ -90,6 +115,7 @@ function ProductCard({
           className="w-full rounded-full py-2.5 text-sm font-semibold border text-white transition-all duration-200 hover:bg-white/10"
           type="button"
           style={{ borderColor: "rgba(34,211,255,0.4)", color: "#22D3FF" }}
+          onClick={onBuyNow}
         >
           Shop Now
         </button>
@@ -161,12 +187,264 @@ function FAQItem({
   );
 }
 
+function PaymentModal({ onClose }: { onClose: () => void }) {
+  const [utr, setUtr] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const upiId = "romex097@ybl";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(upiId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleComplete = () => {
+    if (utr.trim().length >= 6) {
+      setSuccess(true);
+    }
+  };
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.85)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      data-ocid="payment.modal"
+    >
+      <motion.div
+        initial={{ scale: 0.88, opacity: 0, y: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.88, opacity: 0, y: 30 }}
+        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        className="relative w-full max-w-md rounded-3xl p-7 flex flex-col gap-5"
+        style={{
+          background: "rgba(8,15,28,0.98)",
+          border: "1.5px solid rgba(34,211,255,0.35)",
+          boxShadow:
+            "0 0 48px rgba(34,211,255,0.12), 0 8px 40px rgba(0,0,0,0.7)",
+        }}
+      >
+        {/* Close button */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full transition-colors hover:bg-white/10"
+          style={{ color: "#A7B0C0" }}
+          data-ocid="payment.close_button"
+        >
+          <X size={20} />
+        </button>
+
+        <AnimatePresence mode="wait">
+          {!success ? (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col gap-5"
+            >
+              {/* Header */}
+              <div className="text-center">
+                <h2 className="text-2xl font-black text-white">
+                  Complete Your Payment
+                </h2>
+                <p className="text-sm mt-1" style={{ color: "#22D3FF" }}>
+                  Pay ₹49 via UPI
+                </p>
+              </div>
+
+              {/* QR Code */}
+              <div className="flex justify-center">
+                <div
+                  className="rounded-2xl p-3"
+                  style={{
+                    background: "white",
+                    boxShadow: "0 0 24px rgba(34,211,255,0.2)",
+                  }}
+                >
+                  <img
+                    src="/assets/uploads/1773825122748-1.jpg"
+                    alt="PhonePe QR Code"
+                    width={220}
+                    height={220}
+                    className="rounded-xl block"
+                    style={{ width: 220, height: 220, objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+
+              {/* UPI ID */}
+              <div
+                className="rounded-xl px-4 py-3 flex items-center justify-between gap-3"
+                style={{
+                  background: "rgba(34,211,255,0.07)",
+                  border: "1px solid rgba(34,211,255,0.25)",
+                }}
+              >
+                <div>
+                  <p className="text-xs mb-0.5" style={{ color: "#A7B0C0" }}>
+                    UPI ID
+                  </p>
+                  <p className="font-bold text-white tracking-wide">{upiId}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                  style={{
+                    background: copied
+                      ? "rgba(34,211,255,0.2)"
+                      : "rgba(34,211,255,0.1)",
+                    color: "#22D3FF",
+                    border: "1px solid rgba(34,211,255,0.3)",
+                  }}
+                  data-ocid="payment.toggle"
+                >
+                  <Copy size={13} />
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+
+              {/* Instructions */}
+              <p
+                className="text-xs text-center leading-relaxed"
+                style={{ color: "#A7B0C0" }}
+              >
+                Scan QR or pay using UPI ID above, then enter your UTR /
+                Transaction ID below
+              </p>
+
+              {/* UTR Input */}
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="utr-input"
+                  className="text-xs font-semibold"
+                  style={{ color: "#C8D0E0" }}
+                >
+                  Enter UTR / Transaction ID
+                </label>
+                <input
+                  type="text"
+                  value={utr}
+                  onChange={(e) => setUtr(e.target.value)}
+                  placeholder="12-digit transaction reference"
+                  className="w-full rounded-xl px-4 py-3 text-sm text-white outline-none transition-all"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border:
+                      utr.length >= 6
+                        ? "1.5px solid rgba(34,211,255,0.6)"
+                        : "1.5px solid rgba(255,255,255,0.1)",
+                  }}
+                  id="utr-input"
+                  data-ocid="payment.input"
+                />
+              </div>
+
+              {/* Complete Button */}
+              <button
+                type="button"
+                onClick={handleComplete}
+                disabled={utr.trim().length < 6}
+                className="w-full rounded-full py-4 font-bold text-base transition-all duration-200"
+                style={{
+                  background:
+                    utr.trim().length >= 6
+                      ? "linear-gradient(135deg, #22D3FF 0%, #7C4DFF 100%)"
+                      : "rgba(255,255,255,0.07)",
+                  color: utr.trim().length >= 6 ? "white" : "#555E70",
+                  cursor: utr.trim().length >= 6 ? "pointer" : "not-allowed",
+                  boxShadow:
+                    utr.trim().length >= 6
+                      ? "0 4px 24px rgba(34,211,255,0.25)"
+                      : "none",
+                }}
+                data-ocid="payment.submit_button"
+              >
+                Complete Payment ✅
+              </button>
+
+              {/* Telegram Customer Service CTA */}
+              <TelegramCTA />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="flex flex-col items-center gap-5 py-6 text-center"
+              data-ocid="payment.success_state"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 20,
+                  delay: 0.1,
+                }}
+                className="w-20 h-20 rounded-full flex items-center justify-center"
+                style={{
+                  background: "rgba(34,211,100,0.15)",
+                  border: "2px solid rgba(34,211,100,0.5)",
+                }}
+              >
+                <CheckCircle2 size={44} style={{ color: "#22D364" }} />
+              </motion.div>
+              <div>
+                <h3 className="text-2xl font-black text-white">
+                  Payment Submitted!
+                </h3>
+                <p
+                  className="text-sm mt-2 leading-relaxed"
+                  style={{ color: "#A7B0C0" }}
+                >
+                  We've received your UTR. You'll get access via WhatsApp or
+                  Email shortly.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-8 py-3 rounded-full font-bold text-white text-sm"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #22D3FF 0%, #7C4DFF 100%)",
+                  boxShadow: "0 4px 24px rgba(34,211,255,0.25)",
+                }}
+                data-ocid="payment.close_button"
+              >
+                Close
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function App() {
+  const [paymentOpen, setPaymentOpen] = useState(false);
+
   const scrollToPrice = () => {
     document
       .getElementById("price-section")
       ?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const openPayment = () => setPaymentOpen(true);
+  const closePayment = () => setPaymentOpen(false);
 
   return (
     <div
@@ -176,6 +454,11 @@ export default function App() {
           "linear-gradient(160deg, #05070B 0%, #080F1C 50%, #06090F 100%)",
       }}
     >
+      {/* PAYMENT MODAL */}
+      <AnimatePresence>
+        {paymentOpen && <PaymentModal onClose={closePayment} />}
+      </AnimatePresence>
+
       {/* NAVBAR */}
       <header
         className="sticky top-0 z-50 w-full flex items-center justify-between px-5 md:px-10 py-4"
@@ -302,6 +585,7 @@ export default function App() {
                 "Beginner to advanced charts",
                 "Risk management techniques",
               ]}
+              onBuyNow={openPayment}
             />
             <ProductCard
               icon="🛒"
@@ -312,6 +596,7 @@ export default function App() {
                 "Product research & selling strategies",
                 "Scale with dropshipping & ads",
               ]}
+              onBuyNow={openPayment}
             />
             <ProductCard
               icon="🤖"
@@ -322,6 +607,7 @@ export default function App() {
                 "Automate tasks with AI tools",
                 "Build income streams with AI",
               ]}
+              onBuyNow={openPayment}
             />
           </div>
         </motion.div>
@@ -396,9 +682,11 @@ export default function App() {
                   Only
                 </p>
               </div>
+              {/* Telegram CTA above Buy Now button */}
+              <TelegramCTA />
               <GradientButton
                 size="lg"
-                onClick={scrollToPrice}
+                onClick={openPayment}
                 data-ocid="price.primary_button"
               >
                 BUY NOW 🚀
@@ -554,7 +842,11 @@ export default function App() {
             <Users size={16} style={{ color: "#22D3FF" }} />
             <span>5,000+ learners and growing</span>
           </div>
-          <GradientButton size="lg" data-ocid="cta.primary_button">
+          <GradientButton
+            size="lg"
+            onClick={scrollToPrice}
+            data-ocid="cta.primary_button"
+          >
             GET ACCESS NOW 🚀
           </GradientButton>
           <p className="text-sm" style={{ color: "#A7B0C0" }}>
