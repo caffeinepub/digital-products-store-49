@@ -16,8 +16,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif'],
+        display: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+        sans: ['Satoshi', 'Inter', 'sans-serif'],
+        body: ['Satoshi', 'Inter', 'sans-serif'],
       },
       colors: {
         border: "oklch(var(--border))",
@@ -71,17 +72,10 @@ export default {
           ring: "oklch(var(--sidebar-ring))",
         },
         neon: {
-          cyan: '#22D3FF',
-          blue: '#3B82FF',
-          violet: '#7C4DFF',
-          magenta: '#B84BFF',
-        },
-        navy: {
-          900: '#05070B',
-          800: '#080F1C',
-          700: '#0A1220',
-          600: '#0B1526',
-          500: '#0C1A30',
+          cyan: '#25D6FF',
+          blue: '#0AA3FF',
+          orange: '#FF7A18',
+          'orange-light': '#FF8A2A',
         },
       },
       borderRadius: {
@@ -90,9 +84,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
-        'neon-cyan': '0 0 20px rgba(34, 211, 255, 0.4), 0 0 40px rgba(124, 77, 255, 0.2)',
-        'neon-strong': '0 0 30px rgba(34, 211, 255, 0.6), 0 0 60px rgba(124, 77, 255, 0.35)',
+        'neon-cyan': '0 0 20px rgba(37, 214, 255, 0.35), 0 0 40px rgba(37, 214, 255, 0.15)',
+        'neon-cyan-strong': '0 0 35px rgba(37, 214, 255, 0.65), 0 0 70px rgba(10, 163, 255, 0.35)',
+        'neon-orange': '0 0 25px rgba(255, 122, 24, 0.5), 0 0 50px rgba(255, 122, 24, 0.25)',
       },
       keyframes: {
         "accordion-down": {
